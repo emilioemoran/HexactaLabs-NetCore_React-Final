@@ -19,11 +19,13 @@ namespace Stock.Api.Controllers
         private readonly ProductService service;
         private readonly ProductTypeService productTypeService;
         private readonly IMapper mapper;
+        private readonly ProviderService providerService;
 
-        public ProductController(ProductService service, ProductTypeService productTypeService, IMapper mapper)
+        public ProductController(ProductService service, ProductTypeService productTypeService, ProviderService providerService, IMapper mapper)
         {
             this.service = service;
             this.productTypeService = productTypeService;
+            this.providerService = providerService;
             this.mapper = mapper;
         }
 
@@ -37,9 +39,10 @@ namespace Stock.Api.Controllers
             try
             {
                 var result = this.service.GetAll();
-                return this.mapper.Map<IEnumerable<ProductDTO>>(result).ToList();
+                var products = this.mapper.Map<IEnumerable<ProductDTO>>(result).ToList();
+                return products;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return StatusCode(500);
             }
@@ -65,13 +68,17 @@ namespace Stock.Api.Controllers
         {
             TryValidateModel(value);
 
-            try {
+            try
+            {
                 var product = this.mapper.Map<Product>(value);
                 product.ProductType = this.productTypeService.Get(value.ProductTypeId.ToString());
+                product.Provider = this.providerService.Get(value.ProviderId.ToString());
                 this.service.Create(product);
                 value.Id = product.Id;
                 return Ok(new { Success = true, Message = "", data = value });
-            } catch {
+            }
+            catch
+            {
                 return Ok(new { Success = false, Message = "The name is already in use" });
             }
         }
@@ -103,7 +110,7 @@ namespace Stock.Api.Controllers
                     model.Condition.Equals(ActionDto.AND));
             }
 
-            if(!string.IsNullOrWhiteSpace(model.Brand))
+            if (!string.IsNullOrWhiteSpace(model.Brand))
             {
                 filter = filter.AndOrCustom(
                     x => x.ProductType.Description.ToUpper().Contains(model.Brand.ToUpper()),
@@ -121,11 +128,14 @@ namespace Stock.Api.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(string id)
         {
-            try {
+            try
+            {
                 var product = this.service.Get(id);
                 this.service.Delete(product);
                 return Ok(new { Success = true, Message = "", data = id });
-            } catch {
+            }
+            catch
+            {
                 return Ok(new { Success = false, Message = "", data = id });
             }
         }

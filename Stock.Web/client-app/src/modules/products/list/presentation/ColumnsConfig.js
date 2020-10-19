@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
+import { FaEdit, FaTrash, FaSearch, } from "react-icons/fa";
+import {MdAddShoppingCart} from "react-icons/md"
+import { Button, Input, Form } from "reactstrap";
+import { setCart } from "../../../localstorage";
 
 const renderToolbar = ({ value }) => {
   let viewButton = (
@@ -31,46 +34,90 @@ const renderToolbar = ({ value }) => {
   );
 };
 
-const HeaderComponent = props => {
-  return (
-    <h2 className="tableHeading">
-      {props.title}
-    </h2>
+const addToCart = (value) => {
+  var id = value.original.id;
+  var stock = value.original.stock;
+  var cant;
+  var noStock = stock === 0;
+
+  let inputCart = (
+    <Input
+      name="Cant"
+      type="number"
+      min="1"
+      max={stock}
+      onChange={(e) => (cant = e.target.value)}
+      placeholder="Cantidad"
+      required
+    ></Input>
   );
+
+  let cartButton = (
+    <Button
+      className="product__button"
+      color="primary"
+      aria-label="Agregar"
+      disabled={noStock}
+      type="submit"
+      value="Submit"
+    >
+      <MdAddShoppingCart />
+    </Button>
+  );
+  return (
+    <span>
+      <Form onSubmit={() => setCart(id, cant, stock)} inline="true" className= "addForm">
+        {inputCart} {cartButton}
+      </Form>
+    </span>
+  );
+};
+
+const HeaderComponent = (props) => {
+  return <h2 className="tableHeading">{props.title}</h2>;
 };
 
 HeaderComponent.displayName = "HeaderComponent";
 
-const columns = [
+const Columns = [
   {
     Header: <HeaderComponent title="Nombre" />,
     accessor: "name",
-    Cell: props => props.value
+    Cell: (props) => props.value,
   },
   {
     Header: <HeaderComponent title="Tipo de producto" />,
     accessor: "category",
-    Cell: props => props.value
+    Cell: (props) => props.value,
   },
   {
     Header: <HeaderComponent title="Proovedor" />,
     accessor: "providerName",
-    Cell: props => props.value
+    Cell: (props) => props.value,
   },
   {
     Header: <HeaderComponent title="Acciones" />,
     accessor: "id",
-    Cell: renderToolbar
-  }
+    Cell: renderToolbar,
+  },
+  {
+    Header: <HeaderComponent title="AddToCart" />,
+    accessor: "id",
+    Cell: addToCart,
+  },
 ];
 
 HeaderComponent.propTypes = {
   title: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
 };
 
 renderToolbar.propTypes = {
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
 };
 
-export default columns;
+Columns.propTypes = {
+  handleAddToCart: PropTypes.func.isRequired,
+};
+
+export default Columns;

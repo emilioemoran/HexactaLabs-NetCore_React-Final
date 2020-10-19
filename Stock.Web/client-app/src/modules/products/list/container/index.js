@@ -6,6 +6,7 @@ import { getProducts, fetchByFilters, fetchAll } from "../index";
 import { getProvidersById } from "../../../providers/list";
 import { getById } from "../../../productType/list";
 
+
 export class ProductsPage extends Component {
   constructor() {
     super();
@@ -13,20 +14,20 @@ export class ProductsPage extends Component {
       filters: {
         Name: "",
         Brand: "",
-        Condition: "AND"
-      }
+        Condition: "AND",
+      },
     };
   }
 
-  submitFilter = event => {
+  submitFilter = (event) => {
     event.preventDefault();
     this.props.fetchByFilters(this.state.filters);
   };
 
-  filterChanged = event => {
+  filterChanged = (event) => {
     const newFilters = {
       ...this.state.filters,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     };
     this.setState({ filters: newFilters });
   };
@@ -47,27 +48,24 @@ export class ProductsPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const providersById = getProvidersById(state);
   return {
-    products: getProducts(state).map(product => ({
+    products: getProducts(state).map((product) => ({
       ...product,
       providerName: product.providerId
         ? providersById[product.providerId].name
         : "",
-      category: getById(state, product.productTypeId).description
+      category: getById(state, product.productTypeId).description,
     })),
-    providers: providersById
+    providers: providersById,
   };
 };
 
 const mapDispatchToProps = {
   fetchByFilters,
   fetchAll,
-  push
+  push,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProductsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsPage);

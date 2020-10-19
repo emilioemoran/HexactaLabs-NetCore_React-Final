@@ -21,5 +21,11 @@ namespace Stock.Api.DTOs
         public string ProductTypeDesc { get; set; }
 
         public string ProviderId { get; set; }
+
+        public int Stock { get; set; }
+
+        /* private int _stock { get; } */
+
+        public int Quantity { get; set; }
     }
 }

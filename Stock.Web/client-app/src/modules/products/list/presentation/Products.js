@@ -1,13 +1,13 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { Container, Row, Col, Button } from "reactstrap";
-import columns from "./ColumnsConfig";
+import Columns from "./ColumnsConfig";
 import ReactTable from "react-table";
 import Search from "./ProductSearch";
 
 import PropTypes from "prop-types";
 
-const Presentation = props => {
+const Presentation = (props) => {
   return (
     <Container fluid>
       <Row className="my-1">
@@ -45,7 +45,7 @@ const Presentation = props => {
             data={props.data}
             pages={props.pages}
             loading={props.dataLoading}
-            columns={columns}
+            columns={Columns}
             defaultPageSize={props.defaultPageSize}
             className="-striped -highlight"
           />
@@ -65,7 +65,7 @@ Presentation.propTypes = {
   submitFilter: PropTypes.func.isRequired,
   clearFilter: PropTypes.func.isRequired,
   urls: PropTypes.shape({ create: PropTypes.string }),
-  push: PropTypes.func.isRequired
+  push: PropTypes.func.isRequired,
 };
 
 export default Presentation;

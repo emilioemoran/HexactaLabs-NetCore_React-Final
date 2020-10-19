@@ -4,49 +4,49 @@ import { MdSearch, MdCancel } from "react-icons/md";
 
 import PropTypes from "prop-types";
 
-const Search = props => {
-    return (
-        <React.Fragment>
-            <h4>Búsqueda</h4>
-            <Row>
-                <Col>
-                    <Input
-                        name="Name"
-                        id="nameInput"
-                        type="text"
-                        onChange={props.handleFilter}
-                        value={props.filters.Name}
-                        placeholder="Nombre"
-                    />
-                </Col>
-                <Col>
-                    <Input
-                        name="Brand"
-                        id="brandInput"
-                        type="text"
-                        onChange={props.handleFilter}
-                        value={props.filters.Brand}
-                        placeholder="Tipo de producto"
-                    />
-                </Col>
-                <Col>
-                    <Button color="primary" onClick={props.submitFilter}>
-                        <MdSearch /> Buscar
+const Search = (props) => {
+  return (
+    <React.Fragment>
+      <h4>Búsqueda</h4>
+      <Row>
+        <Col>
+          <Input
+            name="Name"
+            id="nameInput"
+            type="text"
+            onChange={props.handleFilter}
+            value={props.filters.Name}
+            placeholder="Nombre"
+          />
+        </Col>
+        <Col>
+          <Input
+            name="Brand"
+            id="brandInput"
+            type="text"
+            onChange={props.handleFilter}
+            value={props.filters.Brand}
+            placeholder="Tipo de producto"
+          />
+        </Col>
+        <Col>
+          <Button color="primary" onClick={props.submitFilter}>
+            <MdSearch /> Buscar
           </Button>
-                    <Button color="primary" className="ml-3" onClick={props.clearFilter}>
-                        <MdCancel /> Limpiar
+          <Button color="primary" className="ml-3" onClick={props.clearFilter}>
+            <MdCancel /> Limpiar
           </Button>
-                </Col>
-            </Row>
-        </React.Fragment>
-    );
+        </Col>
+      </Row>
+    </React.Fragment>
+  );
 };
 
 Search.propTypes = {
-    handleFilter: PropTypes.func.isRequired,
-    submitFilter: PropTypes.func.isRequired,
-    clearFilter: PropTypes.func.isRequired,
-    filters: PropTypes.object.isRequired
+  handleFilter: PropTypes.func.isRequired,
+  submitFilter: PropTypes.func.isRequired,
+  clearFilter: PropTypes.func.isRequired,
+  filters: PropTypes.object.isRequired,
 };
 
 export default Search;

@@ -10,6 +10,8 @@ import provider from "../modules/providers";
 import product from "../modules/products";
 import productType from "../modules/productType";
 import store from "../modules/stores";
+import cart from "../modules/cart";
+import orders from "../modules/orders";
 
 export default function configureStore(history, initialState) {
   const reducers = {
@@ -20,7 +22,9 @@ export default function configureStore(history, initialState) {
     provider,
     product,
     productType,
-    store
+    store,
+    cart,
+    orders,
   };
 
   const middleware = [thunk, routerMiddleware(history)];
@@ -42,9 +46,6 @@ export default function configureStore(history, initialState) {
   return createStore(
     rootReducer,
     initialState,
-    compose(
-      applyMiddleware(...middleware),
-      ...enhancers
-    )
+    compose(applyMiddleware(...middleware), ...enhancers)
   );
 }
